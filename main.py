@@ -53,7 +53,19 @@ class Ball(pygame.sprite.Sprite):
         elif self.rect.top > self.height:
             self.rect.bottom = 0
         
+class Glass(pygame.sprite.Sprite):
+    def __init__(self, glass_image, bg_size):
+        pygame.sprite.Sprite.__init__(self)
+        self.glass_image = pygame.image.load(glass_image).convert_alpha()
+        self.glass_rect = self.glass_image.get_rect()
 
+
+        self.glass_rect.left, self.glass_rect.top = (bg_size[0]-self.glass_rect.width)//2 ,\
+                                                    bg_size[1] - self.glass_rect.height
+        
+
+
+        
 
 def main():
     pygame.init()
@@ -61,6 +73,7 @@ def main():
     speed = [1,1]
     ball_image = 'grey_ball.png'
     bg_image = 'background.png'
+    glass_image = 'glass.png'
 
     running = True
 
@@ -93,6 +106,10 @@ def main():
         balls.append(ball)
         group.add(ball)
 
+
+    #创建玻璃
+    glass = Glass(glass_image, bg_size)
+
     clock = pygame.time.Clock()
     
     while running:
@@ -107,6 +124,9 @@ def main():
 
 
         screen.blit(background, (0,0))
+
+        screen.blit(glass.glass_image, glass.glass_rect)
+        
 
         for each in balls:
             each.move()
